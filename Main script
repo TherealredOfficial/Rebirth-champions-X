@@ -1,0 +1,122 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Mystic.Lua", "Ocean")
+
+-- Main
+local Main = Window:NewTab("Main")
+local MainSection = Main:NewSection("Main")
+
+-- Pets
+local Pets = Window:NewTab("Pets")
+local PetsSection = Pets:NewSection("Pets Stuff")
+
+--Stopping The Loops
+local candyCornLoopEnabled = false
+local basicLoopEnabled = false
+local autoClickerLoopEnabled = false
+local rebirth1LoopEnabled = false
+
+
+function CandyCornEgg()
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Functions = ReplicatedStorage:WaitForChild("Functions")
+    local Unbox = Functions:WaitForChild("Unbox")
+
+    local unboxArgs = {
+        [1] = "Candy Corn",
+        [2] = "Triple"
+    }
+
+    while candyCornLoopEnabled do
+        Unbox:InvokeServer(unpack(unboxArgs))
+        wait(0.5) -- Adjust the wait time as needed
+    end
+end
+
+function BasicEgg()
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Functions = ReplicatedStorage:WaitForChild("Functions")
+    local Unbox = Functions:WaitForChild("Unbox")
+
+    local basicArgs = {
+        [1] = "Basic",
+        [2] = "Triple"
+    }
+
+    while basicLoopEnabled do
+        Unbox:InvokeServer(unpack(basicArgs))
+        wait(0.5) -- Adjust the wait time as needed
+    end
+end
+
+function CreateAutoHatchOptions()
+    PetsSection:NewToggle("CandyCorn Egg (Event)", "ToggleInfo", function(state)
+        if state then
+            candyCornLoopEnabled = true
+            CandyCornEgg()
+        else
+            candyCornLoopEnabled = false
+            print("Toggle Off")
+        end
+    end)
+
+    PetsSection:NewToggle("Basic Egg", "ToggleInfo", function(state)
+        if state then
+            basicLoopEnabled = true
+            BasicEgg()
+        else
+            basicLoopEnabled = false
+            print("Toggle Off")
+        end
+    end)
+end
+
+-- AutoClicker Function
+function AutoClickerEnabled()
+    local Click3 = game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Click3")
+
+    -- AutoClicker
+    while true do
+        Click3:FireServer()
+        wait(0) -- Adjust the wait time as needed
+    end
+end
+
+-- Rebirth Creation
+function CreateRebirthOptions()
+    MainSection:NewToggle("1 Rebirth", "Auto Rebirths Once", function(state)
+        if state then
+            print("Toggle On")
+        else
+            print("Toggle Off")
+        end
+    end)
+end
+
+-- AutoClicker
+MainSection:NewToggle("AutoClicker", "AutoClicks", function(state)
+    if state then
+    autoClickerLoopEnabled = true
+        AutoClickerEnabled()
+    else
+    AutoClickerEnabled = false
+    end
+end)
+
+-- AutoRebirth
+MainSection:NewToggle("AutoRebirth", "AutoRebirths", function(state)
+    if state then
+        CreateRebirthOptions()
+    else
+        print("Toggle Off")
+    end
+end)
+
+
+-- Auto Hatch
+PetsSection:NewToggle("Auto Hatch", "AutoHatchs", function(state)
+    if state then
+        CreateAutoHatchOptions()
+    else
+        print("Toggle Off")
+    end
+end)
